@@ -49,6 +49,13 @@ async function run() {
         return { success: true, user };
     });
 
+    app.put("/users/:id", async (request) => {
+        const { id } = request.params as { id: string };
+        const userService = request.diScope.resolve<UserService>('userService');
+        const user = await userService.update(id, request.body as any);
+        return { success: true, user };
+    })
+
     app.delete("/users/:id", async (request) => {
         const { id } = request.params as { id: string };
         const userService = request.diScope.resolve<UserService>('userService');

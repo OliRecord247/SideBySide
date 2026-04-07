@@ -8,6 +8,14 @@ export class UserService {
         this.em = em;
     }
 
+    async findAll() {
+        return this.em.find(UserSchema, {});
+    }
+
+    async findById(id: string) {
+        return this.em.findOne(UserSchema, { id });
+    }
+
     async create(data: Partial<IUser>) {
         const user = this.em.create(UserSchema, {
             fullname: data.fullname!,
@@ -20,12 +28,16 @@ export class UserService {
         return user;
     }
 
-    async findAll() {
-        return this.em.find(UserSchema, {});
-    }
+    async update(id: string, data: Partial<IUser>) {
+        const user = await this.em.findOne(UserSchema, { id });
+        if (!user) {
+            throw new Error('User not found');
+        }
 
-    async findById(id: string) {
-        return this.em.findOne(UserSchema, { id });
+        this.em.assign(user, data);
+
+        await this.em.flush();
+        return user;
     }
 
     async deleteById(id: string) {
