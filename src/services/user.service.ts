@@ -1,5 +1,5 @@
 import { EntityManager } from "@mikro-orm/postgresql";
-import { UserSchema, type IUser } from '../entities/user.js';
+import { UserSchema, type IUser } from '../entities/user.entity.js';
 
 export class UserService {
     private readonly em: EntityManager;
