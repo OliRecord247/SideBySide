@@ -1,0 +1,31 @@
+{
+  "compilerOptions": {
+    /* Basis instellingen */
+    "target": "ES2024",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "lib": ["ES2024"],
+    
+    /* Output & Structure */
+    "outDir": "dist",
+    "rootDir": "./src",
+    "sourceMap": true,
+    "noEmit": false,
+    
+    /* Strictness & Safety */
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+
+    /* MikroORM Specifiek (Cruciaal voor metadata) */
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+
+    /* Imports */
+    "allowImportingTsExtensions": false, 
+    "resolveJsonModule": true
+  },
+  "include": ["src/**/*.ts"],
+  "exclude": ["node_modules", "dist"]
+}
