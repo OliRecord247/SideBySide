@@ -1,7 +1,18 @@
+import { z } from 'zod';
 import { FastifyInstance, FastifyPluginAsync } from 'fastify';
+import { ZodTypeProvider } from 'fastify-type-provider-zod';
 import { UserService } from '../services/user.service.js';
 
-export const userRoutes: FastifyPluginAsync = async (app: FastifyInstance) => {
+const UserSchema = z.object({
+  fullname: z.string().min(3, "Naam moet minimaal 3 tekens zijn"),
+  email: z.email("Dit is geen geldig e-mailadres"),
+  password: z.string().min(6, "Wachtwoord moet minimaal 6 tekens bevatten"),
+  bio: z.string().optional(),
+});
+
+export const userRoutes: FastifyPluginAsync = async (fastify: FastifyInstance) => {
+    const app = fastify.withTypeProvider<ZodTypeProvider>();
+
     app.get('/', async (request) => {
         const userService = request.diScope.resolve<UserService>('userService');
         const users = await userService.findAll();
@@ -15,16 +26,16 @@ export const userRoutes: FastifyPluginAsync = async (app: FastifyInstance) => {
         return user;
     }); 
 
-    app.post('/', async (request, reply) => {
+    app.post('/', { schema: { body: UserSchema } }, async (request, reply) => {
         const userService = request.diScope.resolve<UserService>('userService');
-        const user = await userService.create(request.body as any);
+        const user = await userService.create(request.body);
         return reply.status(201).send({ success: true, user });
     });
 
-    app.put("/:id", async (request, reply) => {
+    app.put("/:id", { schema: { body: UserSchema } }, async (request, reply) => {
         const { id } = request.params as { id: string };
         const userService = request.diScope.resolve<UserService>('userService');
-        const user = await userService.update(id, request.body as any);
+        const user = await userService.update(id, request.body);
         return reply.send({ success: true, user });
     })
 
