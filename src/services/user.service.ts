@@ -49,6 +49,5 @@ export class UserService {
         this.em.remove(user);
 
         await this.em.flush();
-        return true;
     }   
 }
