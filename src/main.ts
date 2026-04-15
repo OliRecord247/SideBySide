@@ -3,6 +3,7 @@ import Fastify from 'fastify';
 import { initDatabase } from './plugins/database.js';
 import { registerRoutes } from './routes/index.js';
 import { bootstrapDi } from './plugins/di.js';
+import { setupValidator } from './plugins/error.js';
 
 async function start() {
     const app = Fastify({ logger: true });
@@ -12,7 +13,9 @@ async function start() {
 
         await bootstrapDi(app, orm);
 
-        await app.register(registerRoutes, { prefix: '/api' });
+        await setupValidator(app);
+
+        await app.register(registerRoutes);
 
         await app.listen({ port: 3000, host: '0.0.0.0' });
 
