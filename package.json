@@ -11,6 +11,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@fastify/sensible": "^6.0.4",
     "@mikro-orm/core": "^7.0.9",
     "@mikro-orm/postgresql": "^7.0.9",
     "awilix": "^13.0.3",
