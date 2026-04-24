@@ -14,12 +14,17 @@ export const userRoutes: FastifyPluginAsync = async (fastify: FastifyInstance) =
             return UserResponse.fromList(users);
         });
 
-        app.get('/:id', async (request) => {
+        app.get('/:id', async (request, reply) => {
             const { id } = request.params as { id: string };
             const userService = request.diScope.resolve<UserService>('userService');
+
             const user = await userService.findById(id);
+            if (!user) {
+                return reply.notFound("User not found")
+            }
+
             return new UserResponse(user!);
-        }); 
+        });
 
         app.post('/', { schema: { body: dto.schemas.CreateUserSchema } }, async (request, reply) => {
             const userService = request.diScope.resolve<UserService>('userService');
@@ -30,14 +35,24 @@ export const userRoutes: FastifyPluginAsync = async (fastify: FastifyInstance) =
         app.put("/:id", { schema: { body: dto.schemas.UpdateUserSchema } }, async (request, reply) => {
             const { id } = request.params as { id: string };
             const userService = request.diScope.resolve<UserService>('userService');
+
             const user = await userService.update(id, request.body);
+            if (user === null){
+                return reply.notFound("User not found")
+            }
+
             return reply.send(new UserResponse(user));
         })
 
         app.delete("/:id", async (request, reply) => {
             const { id } = request.params as { id: string };
             const userService = request.diScope.resolve<UserService>('userService');
-            await userService.deleteById(id);
+
+            const user = await userService.deleteById(id);
+            if (user === null){
+                return reply.notFound("User not found")
+            }
+
             return reply.send({ success: true });
         });
     }, { prefix: '/users' });
