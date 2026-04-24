@@ -27,8 +27,10 @@ export class UserResponse {
         this.bio = entity.bio;
     }
 
-    static fromList(entities: IUser[]): UserResponse[] {
-        return entities.map(entity => new UserResponse(entity));
+    static fromList(entities: IUser[]): { items: UserResponse[] } {
+        return {
+            items: entities.map(entity => new UserResponse(entity))
+        };
     }
 };
 
