@@ -1,53 +1,37 @@
-import { EntityManager } from "@mikro-orm/postgresql";
-import { UserSchema, type IUser } from '../entities/user.entity.js';
+import { UserRepository } from "../repo/user.repository.js";
+import { type IUser } from '../entities/user.entity.js';
 
 export class UserService {
-    private readonly em: EntityManager;
+    private readonly repo: UserRepository;
 
-    constructor({ em }: { em: EntityManager }) {
-        this.em = em;
+    constructor({ repo }: { repo: UserRepository }) {
+        this.repo = repo;
     }
 
     async findAll() {
-        return this.em.find(UserSchema, {});
+        return this.repo.findAll();
     }
 
     async findById(id: string) {
-        return this.em.findOne(UserSchema, { id });
+        return this.repo.findById(id);
     }
 
     async create(data: Partial<IUser>) {
-        const user = this.em.create(UserSchema, {
-            fullname: data.fullname!,
-            email: data.email!,
-            password: data.password!,
-            bio: data.bio ?? '',
-        });
-
-        await this.em.flush();
-        return user;
+        return this.repo.create(data);
     }
 
     async update(id: string, data: Partial<IUser>) {
-        const user = await this.em.findOne(UserSchema, { id });
-        if (!user) {
-            throw new Error('User not found');
-        }
+        const user = await this.repo.findById(id);
+        if (!user) return null;
 
-        this.em.assign(user, data);
-
-        await this.em.flush();
-        return user;
+        return this.repo.update(id, data);
     }
 
     async deleteById(id: string) {
-        const user = await this.em.findOne(UserSchema, { id });
-        if (!user) {
-            throw new Error('User not found');
-        }
-
-        this.em.remove(user);
-
-        await this.em.flush();
+        const user = await this.repo.findById(id);
+        if (!user) return null;
+        
+        await this.repo.deleteById(id);
+        return user;        
     }   
 }
