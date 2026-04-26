@@ -52,3 +52,5 @@ export class UserRepository {
         await this.em.flush();
     }
 }
+
+export default UserRepository;

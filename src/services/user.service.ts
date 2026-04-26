@@ -4,8 +4,8 @@ import { type IUser } from '../entities/user.entity.js';
 export class UserService {
     private readonly repo: UserRepository;
 
-    constructor({ repo }: { repo: UserRepository }) {
-        this.repo = repo;
+    constructor({ userRepository }: { userRepository: UserRepository }) {
+        this.repo = userRepository;
     }
 
     async findAll() {
@@ -35,3 +35,5 @@ export class UserService {
         return user;        
     }   
 }
+
+export default UserService;
