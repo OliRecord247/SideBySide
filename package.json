@@ -12,6 +12,8 @@
   "license": "ISC",
   "dependencies": {
     "@fastify/sensible": "^6.0.4",
+    "@fastify/swagger": "^9.7.0",
+    "@fastify/swagger-ui": "^5.2.6",
     "@mikro-orm/core": "^7.0.9",
     "@mikro-orm/postgresql": "^7.0.9",
     "awilix": "^13.0.3",

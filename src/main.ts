@@ -4,6 +4,7 @@ import { fastifySensible } from '@fastify/sensible';
 import { initDatabase } from './plugins/database.js';
 import { registerRoutes } from './routes/index.js';
 import { bootstrapDi } from './plugins/di.js';
+import { setupOpenApi } from './plugins/openapi.js';
 import { setupValidator } from './plugins/error.js';
 
 async function start() {
@@ -17,6 +18,8 @@ async function start() {
         await setupValidator(app);
 
         await app.register(fastifySensible);
+        
+        await app.register(setupOpenApi);
         
         await app.register(registerRoutes);
 
