@@ -11,6 +11,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@fastify/awilix": "^8.2.0",
     "@fastify/sensible": "^6.0.4",
     "@fastify/swagger": "^9.7.0",
     "@fastify/swagger-ui": "^5.2.6",
@@ -22,7 +23,6 @@
     "zod": "^4.3.6"
   },
   "devDependencies": {
-    "@fastify/awilix": "^8.2.0",
     "@mikro-orm/cli": "^7.0.9",
     "@types/node": "^25.5.2",
     "@vitest/coverage-v8": "^4.1.5",
