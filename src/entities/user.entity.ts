@@ -1,10 +1,10 @@
-import { v4 } from 'uuid';
+import crypto from 'node:crypto';
 import { defineEntity, type InferEntity, p } from '@mikro-orm/core';
 
 export const UserSchema = defineEntity({
     name: 'User',
     properties: {
-        id: p.uuid().primary().onCreate(() => v4()),
+        id: p.uuid().primary().onCreate(() => crypto.randomUUID()),
         fullname: p.string(),
         email: p.string(),
         password: p.string(),
